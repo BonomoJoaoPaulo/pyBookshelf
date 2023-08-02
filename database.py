@@ -29,9 +29,12 @@ CREATE_READED_TABLE = """CREATE TABLE IF NOT EXISTS readed (
     FOREIGN KEY (reader_id) REFERENCES readers(id),
     FOREIGN KEY (book_id) REFERENCES books(id)
 );"""
+
 INSERT_BOOKS = """INSERT INTO books (title, author, year, isbn, pages, edition, publisher, language, genre, description, image) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
 INSERT_READERS = """INSERT INTO readers (name, surname, age) VALUES (?, ?, ?);"""
+INSERT_READED_BOOK = "INSERT INTO readed (reader_id, book_id) VALUES (?, ?);"
+
 SELECT_ALL_BOOKS = "SELECT * FROM books;"
 SELECT_BOOK_BY_TITLE = "SELECT * FROM books WHERE title = ?;"
 SELECT_BOOK_BY_AUTHOR = "SELECT * FROM books WHERE author = ?;"
@@ -40,11 +43,14 @@ SELECT_BOOK_BY_ISBN = "SELECT * FROM books WHERE isbn = ?;"
 SELECT_BOOK_BY_PUBLISHER = "SELECT * FROM books WHERE publisher = ?;"
 SELECT_BOOK_BY_LANGUAGE = "SELECT * FROM books WHERE language = ?;"
 SELECT_BOOK_BY_GENRE = "SELECT * FROM books WHERE genre = ?;"
-SELECT_READED_BOOKS = "SELECT * FROM readed WHERE reader_name = ?;"
-#SELECT_NOT_READED_BOOKS = "SELECT * FROM books WHERE readed = 0;"
+SELECT_READED_BOOKS = """SELECT books.* FROM books
+                    JOIN readed ON books.id = readed.book_id
+                    JOIN readers ON readers.id = readed.reader_id
+                    WHERE readers.id = ?;"""
+SELECT_READER_NAME = "SELECT name FROM readers WHERE id = ?;"
+SEARCH_BOOKS = "SELECT * FROM books WHERE title LIKE ?;"
+
 DELETE_BOOK_BY_TITLE = "DELETE FROM books WHERE title = ?;"
-INSERT_READED_BOOK = "INSERT INTO readed (reader_id, book_id) VALUES (?, ?);"
-SET_BOOK_READED = "UPDATE books SET readed = 1 WHERE title = ?;"
 DELETE_READER_BY_ID = "DELETE FROM readers WHERE id = ?;"
 
 def create_tables():
@@ -76,12 +82,25 @@ def read_book(reader_id, book_id):
         connection.execute(INSERT_READED_BOOK, (reader_id , book_id,))
 
 
-def get_readed_books(reader_name):
+def get_readed_books(reader_id):
     with connection:
         cursor = connection.cursor()
-        cursor.execute(SELECT_READED_BOOKS, (reader_name,))
+        cursor.execute(SELECT_READED_BOOKS, (reader_id,))
         return cursor.fetchall()
 
+
+def get_reader_name(reader_id):
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(SELECT_READER_NAME, (reader_id,))
+        return cursor.fetchone()[0]
+
+
+def search_books(search_title):
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(SEARCH_BOOKS, (f"%{search_title}%",))
+        return cursor.fetchall()
 
 def delete_book(title):
     with connection:
