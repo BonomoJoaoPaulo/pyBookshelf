@@ -62,3 +62,10 @@ def get_readed_books():
         cursor = connection.cursor()
         cursor.execute(SELECT_READED_BOOKS)
         return cursor.fetchall()
+
+
+def get_not_readed_books():
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(SELECT_NOT_READED_BOOKS)
+        return cursor.fetchall()

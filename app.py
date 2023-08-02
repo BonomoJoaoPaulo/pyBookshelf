@@ -28,8 +28,20 @@ def prompt_add_book():
     database.add_book(title, author, year, isbn, pages, edition, publisher, language, genre, description, image)
 
 
-def print_book_list(books):
-    pass
+def print_book_list(heading, books):
+    print(f"-- {heading} books --")
+    for book in books:
+        print(f"""{book['title']} by {book['author']} ({book['year']})
+              Publisher: {book['publisher']}
+              Language: {book['language']}
+              Genre: {book['genre']}
+              {book['description']}
+              ------------------------------------""")
+
+
+def prompt_read_book():
+    title = input("Enter the title of the book you just finished reading: ")
+    database.read_book(title)
 
 
 print(welcome)
@@ -39,12 +51,15 @@ while (user_input := input(menu)) != "6":
     if user_input == "1":
         prompt_add_book()
     elif user_input == "2":
-        pass
+        books = database.get_books()
+        print_book_list("All", books)
     elif user_input == "3":
-        pass
+        books = database.get_readed_books()
+        print_book_list("Readed", books)
     elif user_input == "4":
-        pass
+        books = database.get_not_readed_books()
+        print_book_list("Not readed", books)
     elif user_input == "5":
-        pass
+        prompt_read_book()
     else:
-        print("Invalid input, please try again!")
+        print("Invalid input, please try again!\n")
