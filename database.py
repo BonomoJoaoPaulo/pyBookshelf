@@ -30,6 +30,7 @@ SELECT_BOOK_BY_PUBLISHER = "SELECT * FROM books WHERE publisher = ?;"
 SELECT_BOOK_BY_LANGUAGE = "SELECT * FROM books WHERE language = ?;"
 SELECT_BOOK_BY_GENRE = "SELECT * FROM books WHERE genre = ?;"
 SELECT_READED_BOOKS = "SELECT * FROM books WHERE readed = 1;"
+SELECT_NOT_READED_BOOKS = "SELECT * FROM books WHERE readed = 0;"
 
 SET_BOOK_READED = "UPDATE books SET readed = 1 WHERE title = ?;"
 
