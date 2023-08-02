@@ -31,7 +31,7 @@ SELECT_BOOK_BY_LANGUAGE = "SELECT * FROM books WHERE language = ?;"
 SELECT_BOOK_BY_GENRE = "SELECT * FROM books WHERE genre = ?;"
 SELECT_READED_BOOKS = "SELECT * FROM books WHERE readed = 1;"
 SELECT_NOT_READED_BOOKS = "SELECT * FROM books WHERE readed = 0;"
-
+DELETE_BOOK_BY_TITLE = "DELETE FROM books WHERE title = ?;"
 SET_BOOK_READED = "UPDATE books SET readed = 1 WHERE title = ?;"
 
 
@@ -69,3 +69,8 @@ def get_not_readed_books():
         cursor = connection.cursor()
         cursor.execute(SELECT_NOT_READED_BOOKS)
         return cursor.fetchall()
+
+
+def delete_book(title):
+    with connection:
+        connection.execute(DELETE_BOOK_BY_TITLE, (title,))

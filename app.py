@@ -6,7 +6,8 @@ menu = """Please select one of the following options:
 3) View readed books
 4) View not readed books
 5) Read a book
-6) Exit
+6) Delete a book
+7) Exit
 
 Your selection: """
 welcome = "Welcome to the pyBookshelf!"
@@ -49,10 +50,15 @@ def prompt_read_book():
     database.read_book(title)
 
 
+def prompt_delete_book():
+    title = input("Enter the title of the book you want to delete: ")
+    database.delete_book(title)
+
+
 print(welcome)
 database.create_tables()
 
-while (user_input := input(menu)) != "6":
+while (user_input := input(menu)) != "7":
     if user_input == "1":
         prompt_add_book()
     elif user_input == "2":
@@ -66,5 +72,7 @@ while (user_input := input(menu)) != "6":
         print_book_list("Not readed", books)
     elif user_input == "5":
         prompt_read_book()
+    elif user_input == "6":
+        prompt_delete_book()
     else:
         print("Invalid input, please try again!\n")
