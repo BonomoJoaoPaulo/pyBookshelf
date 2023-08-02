@@ -19,7 +19,7 @@ CREATE_BOOKS_TABLE = """CREATE TABLE IF NOT EXISTS books (
 );
 """
 INSERT_BOOKS = """INSERT INTO books (title, author, year, isbn, pages, edition, publisher, language, genre, description, image, readed) 
-                VALUES (?, ?, 0, ?, 0, ?, ?, ?, ?, ?, ?, 0);"""
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);"""
 
 SELECT_ALL_BOOKS = "SELECT * FROM books;"
 SELECT_BOOK_BY_TITLE = "SELECT * FROM books WHERE title = ?;"
@@ -29,9 +29,35 @@ SELECT_BOOK_BY_ISBN = "SELECT * FROM books WHERE isbn = ?;"
 SELECT_BOOK_BY_PUBLISHER = "SELECT * FROM books WHERE publisher = ?;"
 SELECT_BOOK_BY_LANGUAGE = "SELECT * FROM books WHERE language = ?;"
 SELECT_BOOK_BY_GENRE = "SELECT * FROM books WHERE genre = ?;"
-SELECT_READED_BOOKS = "SELECT * FROM books WHERE readed = ?;"
+SELECT_READED_BOOKS = "SELECT * FROM books WHERE readed = 1;"
+
+SET_BOOK_READED = "UPDATE books SET readed = 1 WHERE title = ?;"
 
 
-def create_tables():
-    pass
+def create_tables(create_table_query=CREATE_BOOKS_TABLE):
+    with connection:
+        connection.execute(create_table_query)
 
+
+def add_book(title, author, isbn, edition, publisher, language, genre, description, image):
+    with connection:
+        connection.execute(INSERT_BOOKS, (title, author, isbn, edition, publisher, language, genre, description, image))
+
+
+def get_books():
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(SELECT_ALL_BOOKS)
+        return cursor.fetchall()
+
+
+def read_book(title):
+    with connection:
+        connection.execute(SET_BOOK_READED, (title,))
+
+
+def get_readed_books():
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(SELECT_READED_BOOKS)
+        return cursor.fetchall()
