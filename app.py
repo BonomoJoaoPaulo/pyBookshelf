@@ -45,9 +45,19 @@ def print_book_list(heading, books):
     print("END OF LIST.\n\n")
 
 
+def print_readed_book_list(books, reader_name):
+    print(f"-- {reader_name}'s readed books --")
+    print("------------------------------------")
+    for book in books:
+        print(f"""{book[1]}""")
+    print("------------------------------------")
+    print("END OF LIST.\n\n")
+
+
 def prompt_read_book():
-    title = input("Enter the title of the book you just finished reading: ")
-    database.read_book(title)
+    reader_name = input("Enter the name of the reader: ")
+    title = input(f"Enter the title of the book that {reader_name} just finished reading: ")
+    database.read_book(reader_name, title)
 
 
 def prompt_delete_book():
@@ -65,11 +75,11 @@ while (user_input := input(menu)) != "7":
         books = database.get_books()
         print_book_list("All", books)
     elif user_input == "3":
-        books = database.get_readed_books()
-        print_book_list("Readed", books)
+        reader_name = input("Enter the name of the reader: ")
+        books = database.get_readed_books(reader_name)
+        print_readed_book_list(books, reader_name)
     elif user_input == "4":
-        books = database.get_not_readed_books()
-        print_book_list("Not readed", books)
+        pass
     elif user_input == "5":
         prompt_read_book()
     elif user_input == "6":
