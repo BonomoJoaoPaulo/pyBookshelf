@@ -4,10 +4,11 @@ menu = """Please select one of the following options:
 1) Add new book
 2) View all books
 3) View readed books
-4) View not readed books
-5) Read a book
+4) Read a book
+5) Add new reader
 6) Delete a book
-7) Exit
+7) Delete a reader
+8) Exit
 
 Your selection: """
 welcome = "Welcome to the pyBookshelf!"
@@ -29,18 +30,27 @@ def prompt_add_book():
     database.add_book(title, author, year, isbn, pages, edition, publisher, language, genre, description, image)
 
 
+def prompt_add_user():
+    name = input("Enter reader name: ")
+    surname = input("Enter reader surname: ")
+    age = int(input("Enter reader age: "))
+
+    database.add_reader(name, surname, age)
+
+
 def print_book_list(heading, books):
     print(f"-- {heading} books --")
     print("------------------------------------")
     for book in books:
-        print(f"""{book[0]} by {book[1]} ({book[2]})
-            Publisher: {book[6]}
-            Pages Number: {book[4]}
-            ISBN: {book[3]}
-            Language: {book[7]}
-            Edition: {book[5]}
-            Genre: {book[8]}
-        {book[9]}""")
+        print(f"""{book[1]} by {book[2]} ({book[3]})
+            ID: {book[0]}
+            Publisher: {book[7]}
+            Pages Number: {book[5]}
+            ISBN: {book[4]}
+            Language: {book[8]}
+            Edition: {book[6]}
+            Genre: {book[9]}
+        {book[10]}""")
     print("------------------------------------")
     print("END OF LIST.\n\n")
 
@@ -55,9 +65,9 @@ def print_readed_book_list(books, reader_name):
 
 
 def prompt_read_book():
-    reader_name = input("Enter the name of the reader: ")
-    title = input(f"Enter the title of the book that {reader_name} just finished reading: ")
-    database.read_book(reader_name, title)
+    reader_id = input("Enter the ID of the reader: ")
+    book_id = input(f"Enter the ID of the book:: ")
+    database.read_book(reader_id, book_id)
 
 
 def prompt_delete_book():
@@ -65,10 +75,15 @@ def prompt_delete_book():
     database.delete_book(title)
 
 
+def prompt_delete_user():
+    user_id = input("Enter the ID of the reader you want to delete: ")
+    database.delete_reader(user_id)
+
+
 print(welcome)
 database.create_tables()
 
-while (user_input := input(menu)) != "7":
+while (user_input := input(menu)) != "8":
     if user_input == "1":
         prompt_add_book()
     elif user_input == "2":
@@ -79,10 +94,12 @@ while (user_input := input(menu)) != "7":
         books = database.get_readed_books(reader_name)
         print_readed_book_list(books, reader_name)
     elif user_input == "4":
-        pass
-    elif user_input == "5":
         prompt_read_book()
+    elif user_input == "5":
+        prompt_add_user()
     elif user_input == "6":
         prompt_delete_book()
+    elif user_input == "7":
+        prompt_delete_user()
     else:
         print("Invalid input, please try again!\n")
