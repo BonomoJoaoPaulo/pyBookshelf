@@ -40,9 +40,9 @@ def create_tables(create_table_query=CREATE_BOOKS_TABLE):
         connection.execute(create_table_query)
 
 
-def add_book(title, author, isbn, edition, publisher, language, genre, description, image):
+def add_book(title, author, year, isbn, pages, edition, publisher, language, genre, description, image):
     with connection:
-        connection.execute(INSERT_BOOKS, (title, author, isbn, edition, publisher, language, genre, description, image))
+        connection.execute(INSERT_BOOKS, (title, author, year, isbn, pages, edition, publisher, language, genre, description, image))
 
 
 def get_books():

@@ -30,13 +30,18 @@ def prompt_add_book():
 
 def print_book_list(heading, books):
     print(f"-- {heading} books --")
+    print("------------------------------------")
     for book in books:
-        print(f"""{book['title']} by {book['author']} ({book['year']})
-              Publisher: {book['publisher']}
-              Language: {book['language']}
-              Genre: {book['genre']}
-              {book['description']}
-              ------------------------------------""")
+        print(f"""{book[0]} by {book[1]} ({book[2]})
+            Publisher: {book[6]}
+            Pages Number: {book[4]}
+            ISBN: {book[3]}
+            Language: {book[7]}
+            Edition: {book[5]}
+            Genre: {book[8]}
+        {book[9]}""")
+    print("------------------------------------")
+    print("END OF LIST.\n\n")
 
 
 def prompt_read_book():
